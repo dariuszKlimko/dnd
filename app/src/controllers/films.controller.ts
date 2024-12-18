@@ -1,11 +1,11 @@
 import {
   Controller,
   Get,
+  Inject,
   InternalServerErrorException,
   Logger,
   NotFoundException,
   Param,
-  ParseIntPipe,
   Query,
   UseFilters,
   UseGuards,
@@ -17,12 +17,15 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
 } from "@nestjs/swagger";
-import { Film } from "@app/entities/film.entity";
+import { Film } from "@app/entities/film/film.entity";
 import { EntityNotFound } from "@app/common/exceptions/entity.not.found.exception";
 import { FilmServiceIntrface } from "@app/common/types/interfaces/services/film.service.interface";
 import { ThrottlerGuard } from "@nestjs/throttler";
+import { CACHE_MANAGER } from "@nestjs/cache-manager";
+import { Cache } from "cache-manager";
 
 @ApiTags("films")
 @UseFilters(HttpExceptionFilter)
@@ -31,22 +34,29 @@ import { ThrottlerGuard } from "@nestjs/throttler";
 export class FilmController {
   private readonly logger: Logger = new Logger(FilmController.name);
   private readonly filmService: FilmServiceIntrface;
+  private cacheManager: Cache;
 
-  constructor(filmService: FilmService) {
+  constructor(filmService: FilmService, @Inject(CACHE_MANAGER) cacheManager: Cache) {
     this.filmService = filmService;
+    this.cacheManager = cacheManager;
   }
 
   @ApiOperation({ summary: "Get all films for given conditions." })
-  @ApiOkResponse({ description: "Success.", type: [Film] })
+  @ApiOkResponse({ description: "Success.", type: Film })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
+  @ApiQuery({ name: "skip", required: false, type: Number })
+  @ApiQuery({ name: "take", required: false, type: Number })
+  @ApiQuery({ name: "title", required: false, type: String })
   @Get()
-  async getAllAllFilmsWithConditiion(    
-    @Query("skip", ParseIntPipe) skip: number,
-    @Query("take", ParseIntPipe) take: number, 
-    @Query() query: Partial<Film>,
+  async getAllFilmsWithConditiion(
+    @Query("skip") skip?: number,
+    @Query("take") take?: number,
+    @Query("title") title?: string
   ): Promise<[Film[], number]> {
     try {
-      return await this.filmService.findAllByCondition({ query }, skip, take);
+      return await this.filmService.findAllByCondition({ properties: { title } }, (skip = null), (take = null), [
+        "properties",
+      ]);
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -59,8 +69,7 @@ export class FilmController {
   @Get("/:id")
   async getFilmById(@Param("id") id: string): Promise<Film> {
     try {
-      const url = `http://swapi.dev/api/films/${id}/`
-      return await this.filmService.findOneByConditionOrThrow({ url });
+      return await this.filmService.findOneByConditionOrThrow({ id });
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);

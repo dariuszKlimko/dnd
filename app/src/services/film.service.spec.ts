@@ -16,9 +16,7 @@ describe("FilmService", () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        FilmService
-      ],
+      providers: [FilmService],
     }).compile();
 
     filmService = module.get<FilmServiceIntrface>(FilmService);

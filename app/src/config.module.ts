@@ -17,8 +17,12 @@ import { ConfigModule } from "@nestjs/config";
         DB_NAME: Joi.string().required(),
         PGADMIN_DEFAULT_EMAIL: Joi.string().email().required(),
         PGADMIN_DEFAULT_PASSWORD: Joi.string().required(),
+        PGADMIN_PORT: Joi.number().required(),
+        DOCKER_PGADMIN_PORT: Joi.number().required(),
         THROTTLE_TTL: Joi.number().required(),
         THROTTLE_LIMIT: Joi.number().required(),
+        CACHE_TTL: Joi.number().required(),
+        CACHE_MAX_ITEMS: Joi.number().required(),
       }),
       envFilePath: "../.env",
       validationOptions: {

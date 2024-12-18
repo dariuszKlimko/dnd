@@ -8,12 +8,7 @@ import { DataSourceOptions } from "typeorm";
 import { ThrottlerModuleOptions } from "@nestjs/throttler";
 
 export function configureSwagger(app: INestApplication): void {
-  const config = new DocumentBuilder()
-    .setTitle("Health API")
-    .setDescription("Health API")
-    .setVersion("1.0")
-    .addBearerAuth()
-    .build();
+  const config = new DocumentBuilder().setTitle("DND API").setDescription("DND API").setVersion("1.0").build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("/api", app, document);
 }
@@ -40,12 +35,19 @@ export function configureHttpExceptionFilters(app: INestApplication): void {
 export function configureThrotllerModule(configService: ConfigService): ThrottlerModuleOptions {
   return [
     {
-      ttl: configService.get("THROTTLE_TTL"),
-      limit: configService.get("THROTTLE_LIMIT"),
+      ttl: configService.get<number>("THROTTLE_TTL"),
+      limit: configService.get<number>("THROTTLE_LIMIT"),
     },
   ];
 }
 
 export function configureTypeORMModule(configService: ConfigService): DataSourceOptions {
-  return dataBaseConfig(configService.get("NODE_ENV"));
+  return dataBaseConfig(configService.get<string>("NODE_ENV"));
+}
+
+export function configureCacheModule(configService: ConfigService): { ttl: number; max: number } {
+  return {
+    ttl: configService.get<number>("CACHE_TTL"),
+    max: configService.get<number>("CACHE_MAX_ITEMS"),
+  };
 }
