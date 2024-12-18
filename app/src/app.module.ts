@@ -2,8 +2,10 @@ import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppConfigModule } from "@app/config.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { CacheModule } from "@nestjs/cache-manager";
 import { RestLogger } from "@app/common/loggers/rest.logger.middleware";
 import {
+  configureCacheModule,
   configureThrotllerModule,
   configureTypeORMModule,
 } from "@app/bootstrap.configuration";
@@ -20,6 +22,11 @@ import { ThrottlerModule } from "@nestjs/throttler";
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: configureThrotllerModule,
+    }),
+    CacheModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: configureCacheModule,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
     project: "tsconfig.json",
+    tsconfigRootDir: __dirname,
   },
   rules: {
     semi: ["off"],
@@ -40,5 +41,5 @@ module.exports = {
       }
     ]
   },
-  ignorePatterns: [".eslintrc.js"],
+  ignorePatterns: [".eslintrc.js", "migrations"],
 };

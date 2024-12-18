@@ -30,11 +30,12 @@ export abstract class BaseAbstractService<E extends BaseEntity> implements BaseI
   }
 
   async findAllByCondition(
-    condition: FindOptionsWhere<E> | FindOptionsWhere<E>[],
+    condition?: FindOptionsWhere<E> | FindOptionsWhere<E>[],
     skip?: number,
-    take?: number
+    take?: number,
+    relationsArray?: string[]
   ): Promise<[E[], number]> {
-    return await this.repository.findAllByCondition(condition, skip, take);
+    return await this.repository.findAllByCondition(condition, skip, take, relationsArray);
   }
 
   async findOpenQuery(query: FindManyOptions<E>): Promise<[E[], number]> {

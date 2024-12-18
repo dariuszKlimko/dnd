@@ -7,9 +7,10 @@ export interface BaseInterfaceRepository<E> {
   findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[]): Promise<E>;
   findAllByIds(ids: string[]): Promise<[E[], number]>;
   findAllByCondition(
-    condition: FindOptionsWhere<E> | FindOptionsWhere<E>[],
+    condition?: FindOptionsWhere<E> | FindOptionsWhere<E>[],
     skip?: number,
-    take?: number
+    take?: number,
+    relationsArray?: string[]
   ): Promise<[E[], number]>;
   findOpenQuery(query: FindManyOptions<E>): Promise<[E[], number]>;
   mergeEntity(entity: E, updateEntityDto: DeepPartial<E>): E;

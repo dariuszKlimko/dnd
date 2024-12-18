@@ -57,12 +57,14 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
   }
 
   async findAllByCondition(
-    condition: FindOptionsWhere<E> | FindOptionsWhere<E>[],
+    condition?: FindOptionsWhere<E> | FindOptionsWhere<E>[],
     skip?: number,
-    take?: number
+    take?: number,
+    relationsArray?: string[]
   ): Promise<[E[], number]> {
     return await this.repository.findAndCount({
       where: condition,
+      relations: relationsArray,
       skip,
       take,
     });
