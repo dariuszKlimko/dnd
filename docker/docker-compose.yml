@@ -4,8 +4,6 @@ services:
   app:
     # image: darekzegarek/healthapi:latest
     env_file: ../.env
-    environment:
-      CONFIRMATION_HOST_NODEMAILER: http://localhost:3000
     networks:
       - default-network
 
@@ -26,7 +24,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     ports:
-      - '5050:80'
+      - ${DOCKER_PGADMIN_PORT}:${PGADMIN_PORT}
     networks:
       - default-network
     environment:
