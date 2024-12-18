@@ -16,31 +16,31 @@ class FilmPropertiesDto {
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly characters: string;
+  readonly characters: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly planets: string;
+  readonly planets: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly starships: string;
+  readonly starships: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly vehicles: string;
+  readonly vehicles: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly species: string;
+  readonly species: string[];
 
   @ApiProperty()
   @IsString()
