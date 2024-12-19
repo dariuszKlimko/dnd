@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
+import { randomBytes } from "crypto";
 import { BaseEntity as TypeOrmBaseEntity, Column, PrimaryColumn, BeforeInsert, BeforeUpdate } from "typeorm";
 
 export class BasePropertyEntity extends TypeOrmBaseEntity {
@@ -33,9 +34,17 @@ export class BasePropertyEntity extends TypeOrmBaseEntity {
   edited: string;
 
   @BeforeInsert()
+  generateHexId(): void {
+    this.id = randomBytes(16).toString("hex");
+  }
+
+  @BeforeInsert()
   creatCurrentDate(): void {
     const currentDate = new Date();
     this.created = currentDate.toISOString();
+    if (!this.edited) {
+      this.edited = currentDate.toISOString();
+    }
   }
 
   @BeforeUpdate()

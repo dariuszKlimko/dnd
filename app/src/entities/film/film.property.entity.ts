@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { AfterLoad, Column, Entity, JoinColumn, OneToOne } from "typeorm";
 import { BasePropertyEntity } from "@app/common/entity/base.property.entity";
 import { ApiProperty } from "@nestjs/swagger";
 import { Film } from "@app/entities/film/film.entity";
@@ -91,4 +91,9 @@ export class FilmProperty extends BasePropertyEntity {
   })
   @JoinColumn({ name: "film_id" })
   film: Film;
+
+  @AfterLoad()
+  updateReleaseDate(): void {
+      this.releaseDate = this.releaseDate.slice(0, 10);
+  }
 }

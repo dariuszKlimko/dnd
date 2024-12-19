@@ -1,3 +1,5 @@
+import { NOT_ISO8601_DATE } from "@app/common/constans/constans";
+import { NotIso8601Date } from "@app/common/exceptions/not.iso8601.date.exception";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
 import {
@@ -16,60 +18,61 @@ class FilmPropertiesDto {
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly characters: string[];
+  characters: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly planets: string[];
+  planets: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly starships: string[];
+  starships: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly vehicles: string[];
+  vehicles: string[];
 
   @ApiProperty()
   @IsArray()
   @IsUrl({}, { each: true })
   @IsNotEmpty()
-  readonly species: string[];
+  species: string[];
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly producer: string;
+  producer: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly title: string;
+  title: string;
 
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  readonly episodeId: number;
+  episodeId: number;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly director: string;
+  director: string;
 
   @ApiProperty()
   @IsISO8601({ strict: true, strictSeparator: true })
   @Transform(({ value }) => {
     const isValidDate = isISO8601(value, { strict: true, strictSeparator: true });
     if (!isValidDate) {
-      throw new Error(`Property "releaseDate" should be a valid ISO8601 date string`);
+      throw new NotIso8601Date(NOT_ISO8601_DATE);
     }
-    return new Date(value);
+    const date = new Date(value);
+    return date.toISOString();
   })
   @IsNotEmpty()
   releaseDate: string;
@@ -77,29 +80,19 @@ class FilmPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  readonly openingCrawl: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  readonly filmId: string;
+  openingCrawl: string;
 
   @ApiProperty()
   @IsUrl()
   @IsNotEmpty()
-  readonly url: string;
+  url: string;
 }
 
 export class CreateFilmDto {
-  @ApiProperty({ type: () => FilmPropertiesDto })
+  @ApiProperty()
   @Type(() => FilmPropertiesDto)
   @ValidateNested()
-  readonly properties: FilmPropertiesDto;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  id: string;
+  properties: FilmPropertiesDto;
 
   @ApiProperty()
   @IsString()

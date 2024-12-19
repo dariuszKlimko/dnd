@@ -3,7 +3,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 
 export interface BaseInterfaceRepository<E> {
   findAll(skip?: number, take?: number): Promise<[E[], number]>;
-  findOneByIdOrThrow(id: string): Promise<E>;
+  findOneByIdOrThrow(id: string, relations?: string[]): Promise<E>;
   findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[]): Promise<E>;
   findAllByIds(ids: string[]): Promise<[E[], number]>;
   findAllByCondition(
