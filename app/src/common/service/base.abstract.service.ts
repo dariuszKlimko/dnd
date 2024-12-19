@@ -17,8 +17,8 @@ export abstract class BaseAbstractService<E extends BaseEntity> implements BaseI
     return await this.repository.findAll(skip, take);
   }
 
-  async findOneByIdOrThrow(id: string): Promise<E> {
-    return await this.repository.findOneByIdOrThrow(id);
+  async findOneByIdOrThrow(id: string, relations?: string[]): Promise<E> {
+    return await this.repository.findOneByIdOrThrow(id, relations);
   }
 
   async findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[]): Promise<E> {

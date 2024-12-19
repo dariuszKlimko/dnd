@@ -32,6 +32,6 @@ export class BaseEntity extends TypeOrmBaseEntity {
 
   @BeforeInsert()
   generateHexId(): void {
-    this.id = randomBytes(32).toString("hex");
+    this.id = randomBytes(16).toString("hex");
   }
 }

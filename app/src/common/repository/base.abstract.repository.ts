@@ -25,12 +25,15 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
     return await this.repository.findAndCount({ skip, take });
   }
 
-  async findOneByIdOrThrow(id: string): Promise<E> {
+  async findOneByIdOrThrow(id: string, relations?: string[]): Promise<E> {
     try {
       if (id === undefined) {
         throw new EntityNotFound(this.errorMessage);
       }
-      return await this.repository.findOneByOrFail({ id } as FindOptionsWhere<E> | FindOptionsWhere<E>[]);
+      return await this.repository.findOneOrFail({
+        where: { id } as FindOptionsWhere<E>,
+        relations
+      });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new EntityNotFound(this.errorMessage);
