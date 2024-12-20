@@ -1,4 +1,5 @@
 import { NOT_ISO8601_DATE } from "@app/common/constans/constans";
+import { CreateBaseDto } from "@app/common/dto/base.create.dto";
 import { NotIso8601Date } from "@app/common/exceptions/not.iso8601.date.exception";
 import { ApiProperty } from "@nestjs/swagger";
 import { Transform, Type } from "class-transformer";
@@ -88,24 +89,9 @@ class FilmPropertiesDto {
   url: string;
 }
 
-export class CreateFilmDto {
+export class CreateFilmDto extends CreateBaseDto {
   @ApiProperty()
   @Type(() => FilmPropertiesDto)
   @ValidateNested()
   properties: FilmPropertiesDto;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  description: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  uid: string;
-
-  @ApiProperty()
-  @IsNumber()
-  @IsNotEmpty()
-  v: number;
 }
