@@ -58,13 +58,12 @@ export class FilmController {
     @Query("title") title?: string
   ): Promise<[Film[], number]> {
     try {
-      const films: [Film[], number] = await this.filmService.findAllByCondition(
+      return await this.filmService.findAllByCondition(
         { properties: { title } },
         skip,
         take,
         ["properties"]
       );
-      return films;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -77,8 +76,7 @@ export class FilmController {
   @Get("/:id")
   async getFilmById(@Param("id") id: string): Promise<Film> {
     try {
-      const film = await this.filmService.findOneByIdOrThrow(id, ["properties"]);
-      return film;
+      return await this.filmService.findOneByIdOrThrow(id, ["properties"]);
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);

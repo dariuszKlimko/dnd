@@ -26,40 +26,42 @@ import { EntityNotFound } from "@app/common/exceptions/entity.not.found.exceptio
 import { ThrottlerGuard } from "@nestjs/throttler";
 import { CACHE_MANAGER } from "@nestjs/cache-manager";
 import { Cache } from "cache-manager";
-import { SpeciesServiceIntrface } from "@app/common/types/interfaces/services/species.service.interface";
-import { SpeciesService } from "@app/services/species.service";
-import { Species } from "@app/entities/species/species.entity";
-import { CreateSpeciesDto } from "@app/dtos/species/create.species.dto";
+import { StarshipServiceIntrface } from "@app/common/types/interfaces/services/starship.service.interface";
+import { StarshipService } from "@app/services/starship.service";
+import { Starship } from "@app/entities/starship/starship.entity";
+import { CreateStarshipDto } from "@app/dtos/starship/create.starship.dto";
 
-@ApiTags("species")
+@ApiTags("starships")
 @UseFilters(HttpExceptionFilter)
 @UseGuards(ThrottlerGuard)
-@Controller("species")
-export class SpeciesController {
-  private readonly logger: Logger = new Logger(SpeciesController.name);
-  private readonly speciesService: SpeciesServiceIntrface;
+@Controller("starships")
+export class StarshipController {
+  private readonly logger: Logger = new Logger(StarshipController.name);
+  private readonly starshipService: StarshipServiceIntrface;
   private cacheManager: Cache;
 
-  constructor(speciesService: SpeciesService, @Inject(CACHE_MANAGER) cacheManager: Cache) {
-    this.speciesService = speciesService;
+  constructor(starshipService: StarshipService, @Inject(CACHE_MANAGER) cacheManager: Cache) {
+    this.starshipService = starshipService;
     this.cacheManager = cacheManager;
   }
 
-  @ApiOperation({ summary: "Get all species for given conditions." })
-  @ApiOkResponse({ description: "Success.", type: [Species] })
+  @ApiOperation({ summary: "Get all starships for given conditions." })
+  @ApiOkResponse({ description: "Success.", type: [Starship] })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
   @ApiQuery({ name: "skip", required: false, type: Number })
   @ApiQuery({ name: "take", required: false, type: Number })
   @ApiQuery({ name: "name", required: false, type: String })
+  @ApiQuery({ name: "model", required: false, type: String })
   @Get()
-  async getAllSpeciesWithConditiion(
+  async getAllStarshipsWithConditiion(
     @Query("skip") skip?: number,
     @Query("take") take?: number,
-    @Query("name") name?: string
-  ): Promise<[Species[], number]> {
+    @Query("name") name?: string,
+    @Query("model") model?: string
+  ): Promise<[Starship[], number]> {
     try {
-      return await this.speciesService.findAllByCondition(
-        { properties: { name } },
+      return await this.starshipService.findAllByCondition(
+        { properties: { name, model } },
         skip,
         take,
         ["properties"]
@@ -69,14 +71,14 @@ export class SpeciesController {
     }
   }
 
-  @ApiOperation({ summary: "Get species by id." })
-  @ApiOkResponse({ description: "Success.", type: Species })
-  @ApiNotFoundResponse({ description: "Species not found" })
+  @ApiOperation({ summary: "Get starship by id." })
+  @ApiOkResponse({ description: "Success.", type: Starship })
+  @ApiNotFoundResponse({ description: "Starship not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
   @Get("/:id")
-  async getSpeciesById(@Param("id") id: string): Promise<Species> {
+  async getVehicleById(@Param("id") id: string): Promise<Starship> {
     try {
-      return await this.speciesService.findOneByIdOrThrow(id, ["properties"]);
+      return await this.starshipService.findOneByIdOrThrow(id, ["properties"]);
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);
@@ -85,15 +87,14 @@ export class SpeciesController {
     }
   }
 
-    @ApiOperation({ summary: "Create species." })
-    @ApiCreatedResponse({ description: "Success.", type: Species })
-    @ApiNotFoundResponse({ description: "Species not found" })
+    @ApiOperation({ summary: "Create starship." })
+    @ApiCreatedResponse({ description: "Success.", type: Starship })
     @ApiInternalServerErrorResponse({ description: "Internal server error." })
     @Post()
-    async createSpecies(@Body() speciesPayload: CreateSpeciesDto): Promise<Species> {
+    async createVehicle(@Body() vehiclePayload: CreateStarshipDto): Promise<Starship> {
       try {
-        const species: Species = await this.speciesService.createOne(speciesPayload);
-        return await this.speciesService.saveOneByEntity(species);
+        const starship: Starship = await this.starshipService.createOne(vehiclePayload);
+        return await this.starshipService.saveOneByEntity(starship);
       } catch (error) {
         if (error instanceof EntityNotFound) {
           throw new NotFoundException(error.message);
