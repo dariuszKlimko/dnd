@@ -91,7 +91,7 @@ export class VehicleProperty extends BasePropertyEntity {
     })
     vehicleClass: string;
 
-  @OneToOne(() => Vehicle, (vehicles: Vehicle) => vehicles.properties, {
+  @OneToOne(() => Vehicle, (vehicle: Vehicle) => vehicle.properties, {
     onDelete: "CASCADE",
     orphanedRowAction: "delete",
   })

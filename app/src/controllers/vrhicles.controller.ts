@@ -35,13 +35,13 @@ import { CreateVehicleDto } from "@app/dtos/vehicles/create.vehicle.dto";
 @UseFilters(HttpExceptionFilter)
 @UseGuards(ThrottlerGuard)
 @Controller("vehicles")
-export class VehiclesController {
-  private readonly logger: Logger = new Logger(VehiclesController.name);
-  private readonly vehiclesService: VehicleServiceIntrface;
+export class VehicleController {
+  private readonly logger: Logger = new Logger(VehicleController.name);
+  private readonly vehicleService: VehicleServiceIntrface;
   private cacheManager: Cache;
 
-  constructor(vehiclesService: VehicleService, @Inject(CACHE_MANAGER) cacheManager: Cache) {
-    this.vehiclesService = vehiclesService;
+  constructor(vehicleService: VehicleService, @Inject(CACHE_MANAGER) cacheManager: Cache) {
+    this.vehicleService = vehicleService;
     this.cacheManager = cacheManager;
   }
 
@@ -60,13 +60,12 @@ export class VehiclesController {
     @Query("model") model?: string
   ): Promise<[Vehicle[], number]> {
     try {
-      const vehicles: [Vehicle[], number] = await this.vehiclesService.findAllByCondition(
+      return await this.vehicleService.findAllByCondition(
         { properties: { name, model } },
         skip,
         take,
         ["properties"]
       );
-      return vehicles;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -79,8 +78,7 @@ export class VehiclesController {
   @Get("/:id")
   async getVehicleById(@Param("id") id: string): Promise<Vehicle> {
     try {
-      const vehicle = await this.vehiclesService.findOneByIdOrThrow(id, ["properties"]);
-      return vehicle;
+      return await this.vehicleService.findOneByIdOrThrow(id, ["properties"]);
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);
@@ -95,8 +93,8 @@ export class VehiclesController {
     @Post()
     async createVehicle(@Body() vehiclePayload: CreateVehicleDto): Promise<Vehicle> {
       try {
-        const vehicle: Vehicle = await this.vehiclesService.createOne(vehiclePayload);
-        return await this.vehiclesService.saveOneByEntity(vehicle);
+        const vehicle: Vehicle = await this.vehicleService.createOne(vehiclePayload);
+        return await this.vehicleService.saveOneByEntity(vehicle);
       } catch (error) {
         if (error instanceof EntityNotFound) {
           throw new NotFoundException(error.message);
