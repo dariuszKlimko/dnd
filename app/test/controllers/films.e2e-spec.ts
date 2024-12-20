@@ -9,7 +9,7 @@ import { Request } from "express";
 import { BodyCRUD } from "@test/helpers/body";
 import { deleteCRUD, getCRUD, patchCRUD, postCRUD } from "@test/helpers/crud";
 import { EntityNotFound } from "@app/common/exceptions/entity.not.found.exception";
-import { FilmRepositoryInterface } from "@app/common/types/interfaces/repositories/films.repository.interface";
+import { FilmRepositoryInterface } from "@app/common/types/interfaces/repositories/film.repository.interface";
 import { DataSource } from "typeorm";
 
 describe("Films (e2e)", () => {

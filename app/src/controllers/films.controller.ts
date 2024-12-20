@@ -89,10 +89,9 @@ export class FilmController {
 
   @ApiOperation({ summary: "Create film." })
   @ApiCreatedResponse({ description: "Success.", type: Film })
-  @ApiNotFoundResponse({ description: "Film not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
   @Post()
-  async createMeasurement(@Body() filmPayload: CreateFilmDto): Promise<Film> {
+  async createFilm(@Body() filmPayload: CreateFilmDto): Promise<Film> {
     try {
       const film: Film = await this.filmService.createOne(filmPayload);
       return await this.filmService.saveOneByEntity(film);
