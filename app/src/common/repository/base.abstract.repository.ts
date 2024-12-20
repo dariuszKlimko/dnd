@@ -32,7 +32,7 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
       }
       return await this.repository.findOneOrFail({
         where: { id } as FindOptionsWhere<E>,
-        relations
+        relations,
       });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {

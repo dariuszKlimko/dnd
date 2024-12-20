@@ -94,6 +94,6 @@ export class FilmProperty extends BasePropertyEntity {
 
   @AfterLoad()
   updateReleaseDate(): void {
-      this.releaseDate = this.releaseDate.slice(0, 10);
+    this.releaseDate = this.releaseDate.slice(0, 10);
   }
 }

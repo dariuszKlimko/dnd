@@ -22,7 +22,7 @@ export function configureValidator(app: INestApplication): void {
         new BadRequestException({
           type: "validation error",
           data: validationErrors,
-          message: "data validation error",
+          message: `data validation error - ${validationErrors}`,
         }),
     })
   );

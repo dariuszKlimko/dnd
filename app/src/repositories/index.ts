@@ -1,3 +1,4 @@
 import { FilmRepository } from "@app/repositories/film.repository";
+import { SpeciesRepository } from "@app/repositories/species.repository";
 
-export default [FilmRepository];
+export default [FilmRepository, SpeciesRepository];

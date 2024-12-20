@@ -58,9 +58,12 @@ export class FilmController {
     @Query("title") title?: string
   ): Promise<[Film[], number]> {
     try {
-      const films: [Film[], number] = await this.filmService.findAllByCondition({ properties: { title } }, (skip), (take), [
-        "properties",
-      ]);
+      const films: [Film[], number] = await this.filmService.findAllByCondition(
+        { properties: { title } },
+        skip,
+        take,
+        ["properties"]
+      );
       return films;
     } catch (error) {
       throw new InternalServerErrorException();
@@ -84,7 +87,6 @@ export class FilmController {
     }
   }
 
-  
   @ApiOperation({ summary: "Create film." })
   @ApiCreatedResponse({ description: "Success.", type: Film })
   @ApiNotFoundResponse({ description: "Film not found" })
@@ -101,5 +103,4 @@ export class FilmController {
       throw new InternalServerErrorException();
     }
   }
-
 }
