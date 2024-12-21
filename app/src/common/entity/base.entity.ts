@@ -19,6 +19,9 @@ export class BaseEntity extends TypeOrmBaseEntity {
 
   @ApiProperty()
   @Generated("increment")
+  @Column({
+    type: "int",
+  })
   uid: number;
 
   @ApiProperty()

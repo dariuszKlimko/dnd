@@ -22,5 +22,5 @@
     },
     "typeRoots": ["./@types", "./node_modules/@types"]
   },
-  "include": ["./src/**/*", "./test/**/*", "./@types/**/*", "src/common/exception/.exception.ts"]
+  "include": ["./src/**/*", "./test/**/*", "./@types/**/*", "src/common/exception/.exception.ts", "../1734780725684-entity_dto_edited.ts"]
 }
