@@ -7,12 +7,12 @@ class SpeciesPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  averageHeight: string;
+  average_height: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  averageLifespan: string;
+  average_lifespan: string;
 
   @ApiProperty()
   @IsString()
@@ -27,17 +27,17 @@ class SpeciesPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  eyeColors: string;
+  eye_colors: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  hairColors: string;
+  hair_colors: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  skinColors: string;
+  skin_colors: string;
 
   @ApiProperty()
   @IsUrl()

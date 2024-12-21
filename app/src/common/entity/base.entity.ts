@@ -26,10 +26,9 @@ export class BaseEntity extends TypeOrmBaseEntity {
 
   @ApiProperty()
   @Column({
-    name: "__v",
     type: "int",
   })
-  v: number;
+  __v: number;
 
   @BeforeInsert()
   generateHexId(): void {

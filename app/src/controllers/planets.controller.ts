@@ -55,13 +55,13 @@ export class PlanetController {
   async getAllPlanetsWithConditiion(
     @Query("skip") skip?: number,
     @Query("take") take?: number,
-    @Query("name") name?: string,
+    @Query("name") name?: string
   ): Promise<[Planet[], number]> {
     try {
       const cacheKey = `${skip}+${take}+${name}+${PlanetController.name}`;
       const value: [Planet[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
-          return value;
+        return value;
       }
       const planets: [Planet[], number] = await this.planetService.findAllByCondition(
         { properties: { name } },
@@ -99,19 +99,19 @@ export class PlanetController {
     }
   }
 
-    @ApiOperation({ summary: "Create planet." })
-    @ApiCreatedResponse({ description: "Success.", type: Planet })
-    @ApiInternalServerErrorResponse({ description: "Internal server error." })
-    @Post()
-    async createPlanet(@Body() planetPayload: CreatePlanetDto): Promise<Planet> {
-      try {
-        const planet: Planet = await this.planetService.createOne(planetPayload);
-        return await this.planetService.saveOneByEntity(planet);
-      } catch (error) {
-        if (error instanceof EntityNotFound) {
-          throw new NotFoundException(error.message);
-        }
-        throw new InternalServerErrorException();
+  @ApiOperation({ summary: "Create planet." })
+  @ApiCreatedResponse({ description: "Success.", type: Planet })
+  @ApiInternalServerErrorResponse({ description: "Internal server error." })
+  @Post()
+  async createPlanet(@Body() planetPayload: CreatePlanetDto): Promise<Planet> {
+    try {
+      const planet: Planet = await this.planetService.createOne(planetPayload);
+      return await this.planetService.saveOneByEntity(planet);
+    } catch (error) {
+      if (error instanceof EntityNotFound) {
+        throw new NotFoundException(error.message);
       }
+      throw new InternalServerErrorException();
     }
+  }
 }

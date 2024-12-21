@@ -61,7 +61,7 @@ export class FilmController {
       const cacheKey = `${skip}+${take}+${title}+${FilmController.name}`;
       const value: [Film[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
-          return value;
+        return value;
       }
       const films: [Film[], number] = await this.filmService.findAllByCondition(
         { properties: { title } },

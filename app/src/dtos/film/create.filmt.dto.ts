@@ -58,7 +58,7 @@ class FilmPropertiesDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  episodeId: number;
+  episode_id: number;
 
   @ApiProperty()
   @IsString()
@@ -76,12 +76,12 @@ class FilmPropertiesDto {
     return date.toISOString();
   })
   @IsNotEmpty()
-  releaseDate: string;
+  release_date: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  openingCrawl: string;
+  opening_crawl: string;
 
   @ApiProperty()
   @IsUrl()

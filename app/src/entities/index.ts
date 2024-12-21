@@ -9,4 +9,15 @@ import { StarshipProperty } from "@app/entities/starship/starship.property.entit
 import { Planet } from "@app/entities/planet/planet.entity";
 import { PlanetProperty } from "@app/entities/planet/planet.property.entity";
 
-export default [Film, FilmProperty, Species, SpeciesProperty, Vehicle, VehicleProperty, Starship, StarshipProperty, Planet, PlanetProperty];
+export default [
+  Film,
+  FilmProperty,
+  Species,
+  SpeciesProperty,
+  Vehicle,
+  VehicleProperty,
+  Starship,
+  StarshipProperty,
+  Planet,
+  PlanetProperty,
+];

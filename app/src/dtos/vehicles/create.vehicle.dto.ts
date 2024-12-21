@@ -7,7 +7,7 @@ class VehiclePropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  cargoCapacity: string;
+  cargo_capacity: string;
 
   @ApiProperty()
   @IsString()
@@ -17,7 +17,7 @@ class VehiclePropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  costInCredits: string;
+  cost_in_credits: string;
 
   @ApiProperty()
   @IsString()
@@ -37,7 +37,7 @@ class VehiclePropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  maxAtmospheringSpeed: string;
+  max_atmosphering_speed: string;
 
   @ApiProperty()
   @IsString()
@@ -69,7 +69,7 @@ class VehiclePropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  vehicleClass: string;
+  vehicle_class: string;
 
   @ApiProperty()
   @IsUrl()

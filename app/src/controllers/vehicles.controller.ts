@@ -63,7 +63,7 @@ export class VehicleController {
       const cacheKey = `${skip}+${take}+${name}+${model}+${VehicleController.name}`;
       const value: [Vehicle[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
-          return value;
+        return value;
       }
       const vehicles: [Vehicle[], number] = await this.vehicleService.findAllByCondition(
         { properties: { name, model } },
@@ -101,19 +101,19 @@ export class VehicleController {
     }
   }
 
-    @ApiOperation({ summary: "Create vehicle." })
-    @ApiCreatedResponse({ description: "Success.", type: Vehicle })
-    @ApiInternalServerErrorResponse({ description: "Internal server error." })
-    @Post()
-    async createVehicle(@Body() vehiclePayload: CreateVehicleDto): Promise<Vehicle> {
-      try {
-        const vehicle: Vehicle = await this.vehicleService.createOne(vehiclePayload);
-        return await this.vehicleService.saveOneByEntity(vehicle);
-      } catch (error) {
-        if (error instanceof EntityNotFound) {
-          throw new NotFoundException(error.message);
-        }
-        throw new InternalServerErrorException();
+  @ApiOperation({ summary: "Create vehicle." })
+  @ApiCreatedResponse({ description: "Success.", type: Vehicle })
+  @ApiInternalServerErrorResponse({ description: "Internal server error." })
+  @Post()
+  async createVehicle(@Body() vehiclePayload: CreateVehicleDto): Promise<Vehicle> {
+    try {
+      const vehicle: Vehicle = await this.vehicleService.createOne(vehiclePayload);
+      return await this.vehicleService.saveOneByEntity(vehicle);
+    } catch (error) {
+      if (error instanceof EntityNotFound) {
+        throw new NotFoundException(error.message);
       }
+      throw new InternalServerErrorException();
     }
+  }
 }
