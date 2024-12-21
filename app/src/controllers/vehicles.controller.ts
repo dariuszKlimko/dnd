@@ -60,7 +60,7 @@ export class VehicleController {
     @Query("model") model?: string
   ): Promise<[Vehicle[], number]> {
     try {
-      const cacheKey = `${skip}+${take}+${name}+${model}`;
+      const cacheKey = `${skip}+${take}+${name}+${model}+${VehicleController.name}`;
       const value: [Vehicle[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
           return value;
@@ -78,14 +78,21 @@ export class VehicleController {
     }
   }
 
-  @ApiOperation({ summary: "Get vehicle by id." })
+  @ApiOperation({ summary: "Get vehicle by uid." })
   @ApiOkResponse({ description: "Success.", type: Vehicle })
   @ApiNotFoundResponse({ description: "Vehicle not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
-  @Get("/:id")
-  async getVehicleById(@Param("id") id: string): Promise<Vehicle> {
+  @Get("/:uid")
+  async getVehicleByUid(@Param("uid") uid: number): Promise<Vehicle> {
     try {
-      return await this.vehicleService.findOneByIdOrThrow(id, ["properties"]);
+      const cacheKey = `${String(uid)}+${VehicleController.name}`;
+      const value: Vehicle = await this.cacheManager.get(cacheKey);
+      if (value) {
+        return value;
+      }
+      const vehicle: Vehicle = await this.vehicleService.findOneByConditionOrThrow({ uid }, ["properties"]);
+      await this.cacheManager.set(cacheKey, vehicle);
+      return vehicle;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);

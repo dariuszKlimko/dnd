@@ -58,7 +58,7 @@ export class PlanetController {
     @Query("name") name?: string,
   ): Promise<[Planet[], number]> {
     try {
-      const cacheKey = `${skip}+${take}+${name}`;
+      const cacheKey = `${skip}+${take}+${name}+${PlanetController.name}`;
       const value: [Planet[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
           return value;
@@ -76,19 +76,20 @@ export class PlanetController {
     }
   }
 
-  @ApiOperation({ summary: "Get planet by id." })
+  @ApiOperation({ summary: "Get planet by uid." })
   @ApiOkResponse({ description: "Success.", type: Planet })
   @ApiNotFoundResponse({ description: "Planet not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
-  @Get("/:id")
-  async getPlanetById(@Param("id") id: string): Promise<Planet> {
+  @Get("/:uid")
+  async getPlanetByUid(@Param("uid") uid: number): Promise<Planet> {
     try {
-      const value: Planet = await this.cacheManager.get(id);
+      const cacheKey = `${String(uid)}+${PlanetController.name}`;
+      const value: Planet = await this.cacheManager.get(cacheKey);
       if (value) {
         return value;
       }
-      const planet: Planet = await this.planetService.findOneByIdOrThrow(id, ["properties"]);
-      await this.cacheManager.set(id, planet);
+      const planet: Planet = await this.planetService.findOneByConditionOrThrow({ uid }, ["properties"]);
+      await this.cacheManager.set(cacheKey, planet);
       return planet;
     } catch (error) {
       if (error instanceof EntityNotFound) {

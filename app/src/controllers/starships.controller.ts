@@ -60,7 +60,7 @@ export class StarshipController {
     @Query("model") model?: string
   ): Promise<[Starship[], number]> {
     try {
-      const cacheKey = `${skip}+${take}+${name}+${model}`;
+      const cacheKey = `${skip}+${take}+${name}+${model}+${StarshipController.name}`;
       const value: [Starship[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
           return value;
@@ -78,19 +78,20 @@ export class StarshipController {
     }
   }
 
-  @ApiOperation({ summary: "Get starship by id." })
+  @ApiOperation({ summary: "Get starship by uid." })
   @ApiOkResponse({ description: "Success.", type: Starship })
   @ApiNotFoundResponse({ description: "Starship not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
-  @Get("/:id")
-  async getStarshipById(@Param("id") id: string): Promise<Starship> {
+  @Get("/:uid")
+  async getStarshipByUid(@Param("uid") uid: number): Promise<Starship> {
     try {
-      const value: Starship = await this.cacheManager.get(id);
+      const cacheKey = `${String(uid)}+${StarshipController.name}`;
+      const value: Starship = await this.cacheManager.get(cacheKey);
       if (value) {
         return value;
       }
-      const starship: Starship = await this.starshipService.findOneByIdOrThrow(id, ["properties"]);
-      await this.cacheManager.set(id, starship);
+      const starship: Starship = await this.starshipService.findOneByConditionOrThrow({ uid }, ["properties"]);
+      await this.cacheManager.set(cacheKey, starship);
       return starship;
     } catch (error) {
       if (error instanceof EntityNotFound) {

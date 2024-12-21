@@ -31,7 +31,7 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
         throw new EntityNotFound(this.errorMessage);
       }
       return await this.repository.findOneOrFail({
-        where: { id } as FindOptionsWhere<E>,
+        where: { id } as FindOptionsWhere<E> | FindOptionsWhere<E>[],
         relations,
       });
     } catch (error) {
@@ -41,10 +41,13 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
       throw error;
     }
   }
-
-  async findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[]): Promise<E> {
+  
+  async findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[], relations?: string[]): Promise<E> {
     try {
-      return await this.repository.findOneByOrFail(condition);
+      return await this.repository.findOneOrFail({
+        where: condition,
+        relations,
+      });
     } catch (error) {
       if (error instanceof EntityNotFoundError) {
         throw new EntityNotFound(this.errorMessage);

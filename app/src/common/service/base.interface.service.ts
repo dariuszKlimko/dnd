@@ -4,7 +4,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 export interface BaseInterfaceService<E> {
   findAll(skip?: number, take?: number): Promise<[E[], number]>;
   findOneByIdOrThrow(id: string, relations?: string[]): Promise<E>;
-  findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[]): Promise<E>;
+  findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[], relations?: string[]): Promise<E>;
   findAllByIds(ids: string[]): Promise<[E[], number]>;
   findAllByCondition(
     condition?: FindOptionsWhere<E> | FindOptionsWhere<E>[],
