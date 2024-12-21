@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { randomBytes } from "crypto";
-import { BaseEntity as TypeOrmBaseEntity, Column, PrimaryColumn, BeforeInsert } from "typeorm";
+import { BaseEntity as TypeOrmBaseEntity, Column, PrimaryColumn, BeforeInsert, Generated } from "typeorm";
 
 export class BaseEntity extends TypeOrmBaseEntity {
   @ApiProperty()
@@ -18,10 +18,8 @@ export class BaseEntity extends TypeOrmBaseEntity {
   description: string;
 
   @ApiProperty()
-  @Column({
-    type: "text",
-  })
-  uid: string;
+  @Generated("increment")
+  uid: number;
 
   @ApiProperty()
   @Column({

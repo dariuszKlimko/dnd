@@ -7,10 +7,10 @@ export class CreateBaseDto {
   @IsNotEmpty()
   description: string;
 
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  uid: string;
+  // @ApiProperty()
+  // @IsString()
+  // @IsNotEmpty()
+  // uid: string;
 
   @ApiProperty()
   @IsNumber()
