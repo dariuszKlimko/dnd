@@ -33,7 +33,7 @@ class PlanetPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  orbitalPeriod: string;
+  orbital_period: string;
 
   @ApiProperty()
   @IsString()
@@ -49,18 +49,18 @@ class PlanetPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  rotationPeriod: string;
+  rotation_period: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  surfaceWater: string;
+  surface_water: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   terrain: string;
-  
+
   @ApiProperty()
   @IsUrl()
   @IsNotEmpty()

@@ -39,10 +39,9 @@ export class PlanetProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "orbital_period",
     type: "text",
   })
-  orbitalPeriod: string;
+  orbital_period: string;
 
   @ApiProperty()
   @Column({
@@ -60,17 +59,15 @@ export class PlanetProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "rotation_period",
     type: "text",
   })
-  rotationPeriod: string;
+  rotation_period: string;
 
   @ApiProperty()
   @Column({
-    name: "surface_water",
     type: "text",
   })
-  surfaceWater: string;
+  surface_water: string;
 
   @ApiProperty()
   @Column({

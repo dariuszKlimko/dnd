@@ -59,10 +59,9 @@ export class FilmProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "episode_id",
     type: "integer",
   })
-  episodeId: number;
+  episode_id: number;
 
   @ApiProperty()
   @Column({
@@ -72,18 +71,16 @@ export class FilmProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "release_date",
     type: "varchar",
     length: 32,
   })
-  releaseDate: string;
+  release_date: string;
 
   @ApiProperty()
   @Column({
-    name: "opening_crawl",
     type: "text",
   })
-  openingCrawl: string;
+  opening_crawl: string;
 
   @OneToOne(() => Film, (film: Film) => film.properties, {
     onDelete: "CASCADE",
@@ -94,6 +91,6 @@ export class FilmProperty extends BasePropertyEntity {
 
   @AfterLoad()
   updateReleaseDate(): void {
-    this.releaseDate = this.releaseDate.slice(0, 10);
+    this.release_date = this.release_date.slice(0, 10);
   }
 }

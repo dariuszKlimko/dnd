@@ -61,7 +61,7 @@ export class SpeciesController {
       const cacheKey = `${skip}+${take}+${name}+${SpeciesController.name}`;
       const value: [Species[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
-          return value;
+        return value;
       }
       const species: [Species[], number] = await this.speciesService.findAllByCondition(
         { properties: { name } },
@@ -99,20 +99,20 @@ export class SpeciesController {
     }
   }
 
-    @ApiOperation({ summary: "Create species." })
-    @ApiCreatedResponse({ description: "Success.", type: Species })
-    @ApiNotFoundResponse({ description: "Species not found" })
-    @ApiInternalServerErrorResponse({ description: "Internal server error." })
-    @Post()
-    async createSpecies(@Body() speciesPayload: CreateSpeciesDto): Promise<Species> {
-      try {
-        const species: Species = await this.speciesService.createOne(speciesPayload);
-        return await this.speciesService.saveOneByEntity(species);
-      } catch (error) {
-        if (error instanceof EntityNotFound) {
-          throw new NotFoundException(error.message);
-        }
-        throw new InternalServerErrorException();
+  @ApiOperation({ summary: "Create species." })
+  @ApiCreatedResponse({ description: "Success.", type: Species })
+  @ApiNotFoundResponse({ description: "Species not found" })
+  @ApiInternalServerErrorResponse({ description: "Internal server error." })
+  @Post()
+  async createSpecies(@Body() speciesPayload: CreateSpeciesDto): Promise<Species> {
+    try {
+      const species: Species = await this.speciesService.createOne(speciesPayload);
+      return await this.speciesService.saveOneByEntity(species);
+    } catch (error) {
+      if (error instanceof EntityNotFound) {
+        throw new NotFoundException(error.message);
       }
+      throw new InternalServerErrorException();
     }
+  }
 }

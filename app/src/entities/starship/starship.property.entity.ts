@@ -13,10 +13,9 @@ export class StarshipProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "cargo_capacity",
     type: "text",
   })
-  cargoCapacity: string;
+  cargo_capacity: string;
 
   @ApiProperty()
   @Column({
@@ -26,10 +25,9 @@ export class StarshipProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "cost_in_credits",
     type: "text",
   })
-  costInCredits: string;
+  cost_in_credits: string;
 
   @ApiProperty()
   @Column({
@@ -39,10 +37,9 @@ export class StarshipProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "hyperdriveRating",
     type: "text",
   })
-  hyperdriveRating: string;
+  hyperdrive_rating: string;
 
   @ApiProperty()
   @Column({
@@ -58,10 +55,9 @@ export class StarshipProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "max_a+tmosphering_speed",
     type: "text",
   })
-  maxAtmospheringSpeed: string;
+  max_atmosphering_speed: string;
 
   @ApiProperty()
   @Column({
@@ -99,10 +95,9 @@ export class StarshipProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "starship_class",
     type: "text",
   })
-  starshipClass: string;
+  starship_class: string;
 
   @OneToOne(() => Starship, (starship: Starship) => starship.properties, {
     onDelete: "CASCADE",

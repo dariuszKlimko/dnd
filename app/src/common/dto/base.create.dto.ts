@@ -10,5 +10,5 @@ export class CreateBaseDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  v: number;
+  __v: number;
 }

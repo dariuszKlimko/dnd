@@ -63,7 +63,7 @@ export class StarshipController {
       const cacheKey = `${skip}+${take}+${name}+${model}+${StarshipController.name}`;
       const value: [Starship[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
-          return value;
+        return value;
       }
       const starships: [Starship[], number] = await this.starshipService.findAllByCondition(
         { properties: { name, model } },
@@ -101,19 +101,19 @@ export class StarshipController {
     }
   }
 
-    @ApiOperation({ summary: "Create starship." })
-    @ApiCreatedResponse({ description: "Success.", type: Starship })
-    @ApiInternalServerErrorResponse({ description: "Internal server error." })
-    @Post()
-    async createStarship(@Body() vehiclePayload: CreateStarshipDto): Promise<Starship> {
-      try {
-        const starship: Starship = await this.starshipService.createOne(vehiclePayload);
-        return await this.starshipService.saveOneByEntity(starship);
-      } catch (error) {
-        if (error instanceof EntityNotFound) {
-          throw new NotFoundException(error.message);
-        }
-        throw new InternalServerErrorException();
+  @ApiOperation({ summary: "Create starship." })
+  @ApiCreatedResponse({ description: "Success.", type: Starship })
+  @ApiInternalServerErrorResponse({ description: "Internal server error." })
+  @Post()
+  async createStarship(@Body() vehiclePayload: CreateStarshipDto): Promise<Starship> {
+    try {
+      const starship: Starship = await this.starshipService.createOne(vehiclePayload);
+      return await this.starshipService.saveOneByEntity(starship);
+    } catch (error) {
+      if (error instanceof EntityNotFound) {
+        throw new NotFoundException(error.message);
       }
+      throw new InternalServerErrorException();
     }
+  }
 }

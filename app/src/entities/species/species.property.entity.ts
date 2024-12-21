@@ -7,17 +7,15 @@ import { Species } from "@app/entities/species/species.entity";
 export class SpeciesProperty extends BasePropertyEntity {
   @ApiProperty()
   @Column({
-    name: "average_height",
     type: "text",
   })
-  averageHeight: string;
+  average_height: string;
 
   @ApiProperty()
   @Column({
-    name: "average_lifespan",
     type: "text",
   })
-  averageLifespan: string;
+  average_lifespan: string;
 
   @ApiProperty()
   @Column({
@@ -33,27 +31,24 @@ export class SpeciesProperty extends BasePropertyEntity {
 
   @ApiProperty()
   @Column({
-    name: "eye_colors",
     type: "text",
     default: "none",
   })
-  eyeColors: string;
+  eye_colors: string;
 
   @ApiProperty()
   @Column({
-    name: "hair_colors",
     type: "text",
     default: "none",
   })
-  hairColors: string;
+  hair_colors: string;
 
   @ApiProperty()
   @Column({
-    name: "skin_colors",
     type: "text",
     default: "none",
   })
-  skinColors: string;
+  skin_colors: string;
 
   @ApiProperty()
   @Column({

@@ -41,8 +41,11 @@ export abstract class BaseAbstractRepository<E extends BaseEntity> implements Ba
       throw error;
     }
   }
-  
-  async findOneByConditionOrThrow(condition: FindOptionsWhere<E> | FindOptionsWhere<E>[], relations?: string[]): Promise<E> {
+
+  async findOneByConditionOrThrow(
+    condition: FindOptionsWhere<E> | FindOptionsWhere<E>[],
+    relations?: string[]
+  ): Promise<E> {
     try {
       return await this.repository.findOneOrFail({
         where: condition,

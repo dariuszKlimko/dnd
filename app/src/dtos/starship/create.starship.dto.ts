@@ -12,7 +12,7 @@ class StarshipPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  cargoCapacity: string;
+  cargo_capacity: string;
 
   @ApiProperty()
   @IsString()
@@ -22,7 +22,7 @@ class StarshipPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  costInCredits: string;
+  cost_in_credits: string;
 
   @ApiProperty()
   @IsString()
@@ -32,7 +32,7 @@ class StarshipPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  hyperdriveRating: string;
+  hyperdrive_rating: string;
 
   @ApiProperty()
   @IsString()
@@ -47,7 +47,7 @@ class StarshipPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  maxAtmospheringSpeed: string;
+  max_atmosphering_speed: string;
 
   @ApiProperty()
   @IsString()
@@ -79,7 +79,7 @@ class StarshipPropertiesDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  starshipClass: string;
+  starship_class: string;
 
   @ApiProperty()
   @IsUrl()
