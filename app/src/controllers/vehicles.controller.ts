@@ -60,12 +60,19 @@ export class VehicleController {
     @Query("model") model?: string
   ): Promise<[Vehicle[], number]> {
     try {
-      return await this.vehicleService.findAllByCondition(
+      const cacheKey = `${skip}+${take}+${name}+${model}`;
+      const value: [Vehicle[], number] = await this.cacheManager.get(cacheKey);
+      if (value) {
+          return value;
+      }
+      const vehicles: [Vehicle[], number] = await this.vehicleService.findAllByCondition(
         { properties: { name, model } },
         skip,
         take,
         ["properties"]
       );
+      await this.cacheManager.set(cacheKey, vehicles);
+      return vehicles;
     } catch (error) {
       throw new InternalServerErrorException();
     }

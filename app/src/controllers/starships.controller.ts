@@ -60,12 +60,19 @@ export class StarshipController {
     @Query("model") model?: string
   ): Promise<[Starship[], number]> {
     try {
-      return await this.starshipService.findAllByCondition(
+      const cacheKey = `${skip}+${take}+${name}+${model}`;
+      const value: [Starship[], number] = await this.cacheManager.get(cacheKey);
+      if (value) {
+          return value;
+      }
+      const starships: [Starship[], number] = await this.starshipService.findAllByCondition(
         { properties: { name, model } },
         skip,
         take,
         ["properties"]
       );
+      await this.cacheManager.set(cacheKey, starships);
+      return starships;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -78,7 +85,13 @@ export class StarshipController {
   @Get("/:id")
   async getStarshipById(@Param("id") id: string): Promise<Starship> {
     try {
-      return await this.starshipService.findOneByIdOrThrow(id, ["properties"]);
+      const value: Starship = await this.cacheManager.get(id);
+      if (value) {
+        return value;
+      }
+      const starship: Starship = await this.starshipService.findOneByIdOrThrow(id, ["properties"]);
+      await this.cacheManager.set(id, starship);
+      return starship;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);

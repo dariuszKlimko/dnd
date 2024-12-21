@@ -58,12 +58,19 @@ export class SpeciesController {
     @Query("name") name?: string
   ): Promise<[Species[], number]> {
     try {
-      return await this.speciesService.findAllByCondition(
+      const cacheKey = `${skip}+${take}+${name}`;
+      const value: [Species[], number] = await this.cacheManager.get(cacheKey);
+      if (value) {
+          return value;
+      }
+      const species: [Species[], number] = await this.speciesService.findAllByCondition(
         { properties: { name } },
         skip,
         take,
         ["properties"]
       );
+      await this.cacheManager.set(cacheKey, species);
+      return species;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -76,7 +83,13 @@ export class SpeciesController {
   @Get("/:id")
   async getSpeciesById(@Param("id") id: string): Promise<Species> {
     try {
-      return await this.speciesService.findOneByIdOrThrow(id, ["properties"]);
+      const value: Species = await this.cacheManager.get(id);
+      if (value) {
+        return value;
+      }
+      const species: Species = await this.speciesService.findOneByIdOrThrow(id, ["properties"]);
+      await this.cacheManager.set(id, species);
+      return species;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);
