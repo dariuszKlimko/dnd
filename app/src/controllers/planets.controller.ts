@@ -58,12 +58,19 @@ export class PlanetController {
     @Query("name") name?: string,
   ): Promise<[Planet[], number]> {
     try {
-      return await this.planetService.findAllByCondition(
+      const cacheKey = `${skip}+${take}+${name}`;
+      const value: [Planet[], number] = await this.cacheManager.get(cacheKey);
+      if (value) {
+          return value;
+      }
+      const planets: [Planet[], number] = await this.planetService.findAllByCondition(
         { properties: { name } },
         skip,
         take,
         ["properties"]
       );
+      await this.cacheManager.set(cacheKey, planets);
+      return planets;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -76,7 +83,13 @@ export class PlanetController {
   @Get("/:id")
   async getPlanetById(@Param("id") id: string): Promise<Planet> {
     try {
-      return await this.planetService.findOneByIdOrThrow(id, ["properties"]);
+      const value: Planet = await this.cacheManager.get(id);
+      if (value) {
+        return value;
+      }
+      const planet: Planet = await this.planetService.findOneByIdOrThrow(id, ["properties"]);
+      await this.cacheManager.set(id, planet);
+      return planet;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);

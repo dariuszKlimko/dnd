@@ -58,12 +58,19 @@ export class FilmController {
     @Query("title") title?: string
   ): Promise<[Film[], number]> {
     try {
-      return await this.filmService.findAllByCondition(
+      const cacheKey = `${skip}+${take}+${title}`;
+      const value: [Film[], number] = await this.cacheManager.get(cacheKey);
+      if (value) {
+          return value;
+      }
+      const films: [Film[], number] = await this.filmService.findAllByCondition(
         { properties: { title } },
         skip,
         take,
         ["properties"]
       );
+      await this.cacheManager.set(cacheKey, films);
+      return films;
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -76,7 +83,13 @@ export class FilmController {
   @Get("/:id")
   async getFilmById(@Param("id") id: string): Promise<Film> {
     try {
-      return await this.filmService.findOneByIdOrThrow(id, ["properties"]);
+      const value: Film = await this.cacheManager.get(id);
+      if (value) {
+        return value;
+      }
+      const films: Film = await this.filmService.findOneByIdOrThrow(id, ["properties"]);
+      await this.cacheManager.set(id, films);
+      return films;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);
