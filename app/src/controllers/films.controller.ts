@@ -58,7 +58,7 @@ export class FilmController {
     @Query("title") title?: string
   ): Promise<[Film[], number]> {
     try {
-      const cacheKey = `${skip}+${take}+${title}`;
+      const cacheKey = `${skip}+${take}+${title}+${FilmController.name}`;
       const value: [Film[], number] = await this.cacheManager.get(cacheKey);
       if (value) {
           return value;
@@ -76,20 +76,21 @@ export class FilmController {
     }
   }
 
-  @ApiOperation({ summary: "Get film by id." })
+  @ApiOperation({ summary: "Get film by uid." })
   @ApiOkResponse({ description: "Success.", type: Film })
   @ApiNotFoundResponse({ description: "Film not found" })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
-  @Get("/:id")
-  async getFilmById(@Param("id") id: string): Promise<Film> {
+  @Get("/:uid")
+  async getFilmByUid(@Param("uid") uid: number): Promise<Film> {
     try {
-      const value: Film = await this.cacheManager.get(id);
+      const cacheKey = `${String(uid)}+${FilmController.name}`;
+      const value: Film = await this.cacheManager.get(cacheKey);
       if (value) {
         return value;
       }
-      const films: Film = await this.filmService.findOneByIdOrThrow(id, ["properties"]);
-      await this.cacheManager.set(id, films);
-      return films;
+      const film: Film = await this.filmService.findOneByConditionOrThrow({ uid }, ["properties"]);
+      await this.cacheManager.set(cacheKey, film);
+      return film;
     } catch (error) {
       if (error instanceof EntityNotFound) {
         throw new NotFoundException(error.message);
