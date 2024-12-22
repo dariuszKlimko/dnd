@@ -4,5 +4,14 @@ import { VehicleService } from "@app/services/vehicle.service";
 import { StarshipService } from "@app/services/starship.service";
 import { PlanetService } from "@app/services/planet.service";
 import { UniqueService } from "@app/services/unique.service";
+import { CountNameService } from "@app/services/count.name.service";
 
-export default [FilmService, SpeciesService, VehicleService, StarshipService, PlanetService, UniqueService];
+export default [
+  FilmService,
+  SpeciesService,
+  VehicleService,
+  StarshipService,
+  PlanetService,
+  UniqueService,
+  CountNameService,
+];
