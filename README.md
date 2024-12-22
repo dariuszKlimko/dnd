@@ -1,45 +1,24 @@
-# HealthAPI
-
-## Technologies
-* [Node.js](https://nodejs.org/en/)
-  * [Nest.js](https://nestjs.com/)
-* [PostgreSQL](https://www.postgresql.org//)
-* [Docker](https://docs.docker.com/)
-
-## Run application with docker
-### Setup application
+# dnd
 
 Prepare .env file from .env.example.
 
-### Run application
-1) Go to directory "/HealthAPI" in terminal.
+### Run application with docker
+1) Go to directory "/dnd" in terminal.
 
-2) If you are Windows users go to point 3, otherwise run two commmands:
-```
-chmod +x docker/docker-entrypoint.sh
-```
-```
-chmod +x docker/test-entrypoint.sh
-```
-
-3) To start application.
+2) To start application.
 ```
 make start
 ```
 
-4) To start application e2e tests:
+3) To start application e2e tests:
 ```
 make start ENV=test
 ```
 
-5) Application documentation:
+4) Application documentation:
 ```
 http://localhost:3000/api
 ```
-
-To run application from remote image:
- 1) in "docker-compose.dev.yml" comment out "build" section
- 2) in "docker-compose.yml" uncomment "image" section
 
 ## Run application without docker
 ### Setup application
@@ -50,7 +29,7 @@ Testing database should have the same name like development database plus postfi
 Prepare .env file from .env.example.
 
 ### Run application
-1) Go to directory "/app" in terminal and install all dependencies.
+1) Go to directory "/dnd/app" in terminal and install all dependencies.
 ```
 yarn
 ```
@@ -79,8 +58,3 @@ yarn test:e2e
 ```
 http://localhost:80/api
 ```
-
-
-## TO DO 
-1) pagination
-2) add role guard
