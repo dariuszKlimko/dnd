@@ -12,10 +12,15 @@ make start
 
 3) To start application e2e tests:
 ```
-make start ENV=test
+make e2e-test
 ```
 
-4) Application documentation:
+4) To start application unit tests:
+```
+make unit-test
+```
+
+5) Application documentation:
 ```
 http://localhost:{port}/api
 ```
@@ -54,7 +59,12 @@ yarn start
 yarn test:e2e
 ```
 
-6) Application documentation:
+6) To start application unit tests:
+```
+yarn test
+```
+
+7) Application documentation:
 ```
 http://localhost:{port}/api
 ```
