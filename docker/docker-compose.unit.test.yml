@@ -12,13 +12,13 @@ services:
     environment:
       NODE_ENV: test
       DB_HOST: postgres
-    entrypoint: ["test-entrypoint.sh"]
+    entrypoint: ["unit-test-entrypoint.sh"]
     ports:
       - ${DOCKER_PORT}:${PORT}
     volumes:
       - ../app:/var/www
       - /var/www/node_modules
-      - ./test-entrypoint.sh:/usr/local/bin/test-entrypoint.sh
+      - ./unit-test-entrypoint.sh:/usr/local/bin/unit-test-entrypoint.sh
 
   postgres:
     environment:

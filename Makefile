@@ -13,9 +13,13 @@ start:
 	$(info Make: Starting "$(ENV)" environment)
 	docker-compose --env-file=.env -f docker/docker-compose.yml -f docker/docker-compose.$(ENV).yml up -d
 
-test:
-	$(info Make: Testing)
-	docker-compose --env-file=.env -f docker/docker-compose.yml -f docker/docker-compose.test.yml up --build --exit-code-from app
+e2e-test:
+	$(info Make: Testing e2e)
+	docker-compose --env-file=.env -f docker/docker-compose.yml -f docker/docker-compose.e2e.test.yml up --build --exit-code-from app
+
+unit-test:
+	$(info Make: Testing unit)
+	docker-compose --env-file=.env -f docker/docker-compose.yml -f docker/docker-compose.unit.test.yml up --build --exit-code-from app
 
 stop:
 	$(info Make: Stopping "$(ENV)" environment)
