@@ -30,6 +30,7 @@ const loadFixtures = async (): Promise<FixtureFactoryInterface> => {
 
     for (const fixture of fixturesIterator(fixtures)) {
       const entity = await builder.build(fixture);
+      entity.__v = 0;
       createdFixtures[fixture.name] = await dataSource.getRepository(fixture.entity).save(entity);
     }
 

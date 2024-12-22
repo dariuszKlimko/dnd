@@ -1,0 +1,10 @@
+entity: Film
+items:
+  film1:
+    description: "A Star Wars Film"
+  film2:
+    description: "A Star Wars Film"
+  film3:
+    description: "A Star Wars Film"
+
+# Package "typeorm-fixtures-cli" is not able to add column with prefic "__", so this column was added in loadFixture function.
