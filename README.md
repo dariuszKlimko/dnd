@@ -3,24 +3,26 @@
 Prepare .env file from .env.example.
 
 ### Run application with docker
-1) Go to directory "/dnd" in terminal.
+1) Make sure that .sh files end of line are set to LF.
 
-2) To start application.
+2) Go to directory "/dnd" in terminal.
+
+3) To start application.
 ```
 make start
 ```
 
-3) To start application e2e tests:
+4) To start application e2e tests:
 ```
 make e2e-test
 ```
 
-4) To start application unit tests:
+5) To start application unit tests:
 ```
 make unit-test
 ```
 
-5) Application documentation:
+6) Application documentation:
 ```
 http://localhost:{port}/api
 ```
