@@ -39,13 +39,15 @@ describe("FilmService", () => {
 
     it("get one user", async () => {
       const uid = 100;
-      return await expect(filmService.findOneByConditionOrThrow({ uid }, ["properties"])).rejects.toThrow(EntityNotFound);
+      return await expect(filmService.findOneByConditionOrThrow({ uid }, ["properties"])).rejects.toThrow(
+        EntityNotFound
+      );
     });
   });
-  
+
   describe("findAllByCondition()", () => {
     it("get all films", async () => {
-      const films: [Film[],number] = await filmService.findAllByCondition();
+      const films: [Film[], number] = await filmService.findAllByCondition();
       expect(films[0].length).toEqual(films[1]);
     });
 
@@ -53,12 +55,9 @@ describe("FilmService", () => {
       const title = fixtures.get("filmProperty3").title;
       let skip: number;
       let take: number;
-      const films: [Film[],number] = await filmService.findAllByCondition(
-        { properties: { title } },
-        skip,
-        take,
-        ["properties"]
-      );
+      const films: [Film[], number] = await filmService.findAllByCondition({ properties: { title } }, skip, take, [
+        "properties",
+      ]);
       expect(films[0].length).toEqual(1);
       expect(films[0][0].properties.title).toEqual(title);
     });
@@ -67,12 +66,9 @@ describe("FilmService", () => {
       const title = "not existed title";
       let skip: number;
       let take: number;
-      const films: [Film[],number] = await filmService.findAllByCondition(
-        { properties: { title } },
-        skip,
-        take,
-        ["properties"]
-      );
+      const films: [Film[], number] = await filmService.findAllByCondition({ properties: { title } }, skip, take, [
+        "properties",
+      ]);
       expect(films[0].length).toEqual(0);
     });
 
@@ -80,14 +76,10 @@ describe("FilmService", () => {
       let title: string;
       const skip = 1;
       const take = 1;
-      const films: [Film[],number] = await filmService.findAllByCondition(
-        { properties: { title } },
-        skip,
-        take,
-        ["properties"]
-      );
+      const films: [Film[], number] = await filmService.findAllByCondition({ properties: { title } }, skip, take, [
+        "properties",
+      ]);
       expect(films[0].length).toEqual(1);
     });
   });
-
 });
