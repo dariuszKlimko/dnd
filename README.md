@@ -17,7 +17,7 @@ make start ENV=test
 
 4) Application documentation:
 ```
-http://localhost:3000/api
+http://localhost:{port}/api
 ```
 
 ## Run application without docker
@@ -56,5 +56,5 @@ yarn test:e2e
 
 6) Application documentation:
 ```
-http://localhost:80/api
+http://localhost:{port}/api
 ```
