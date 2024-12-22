@@ -16,33 +16,41 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { ThrottlerGuard } from "@nestjs/throttler";
-import { UniqueService } from "@app/services/unique.service";
 import { AxiosResponse } from "axios";
-import { number, string } from "joi/lib";
+import { string } from "joi/lib";
+import { CountNameService } from "@app/services/count.name.service";
+import { UniqueService } from "@app/services/unique.service";
 import { AxiosException } from "@app/common/exceptions/entity.not.found.exception copy";
 
-@ApiTags("uniques")
+@ApiTags("countname")
 @UseFilters(HttpExceptionFilter)
 @UseGuards(ThrottlerGuard)
-@Controller("uniques")
-export class UniqueController {
-  private readonly logger: Logger = new Logger(UniqueController.name);
+@Controller("countname")
+export class CountNameController {
+  private readonly logger: Logger = new Logger(CountNameController.name);
+  private readonly countNameService: CountNameService;
   private readonly uniqueService: UniqueService;
 
-  constructor(uniqueService: UniqueService) {
+  constructor(countNameService: CountNameService, uniqueService: UniqueService) {
+    this.countNameService = countNameService;
     this.uniqueService = uniqueService;
   }
 
-  @ApiOperation({ summary: "Get unique words." })
-  @ApiOkResponse({ description: "Success.", type: "object", example: Object([string, number]) })
+  @ApiOperation({ summary: "Get most popular name." })
+  @ApiOkResponse({ description: "Success.", type: [string] })
   @ApiBadRequestResponse({ description: "Error during to fetch data from external API." })
   @ApiInternalServerErrorResponse({ description: "Internal server error." })
   @Get()
-  async getUniqueWords(): Promise<[string, number][]> {
+  async getCountName(): Promise<string[]> {
     try {
+      const people: AxiosResponse = await this.countNameService.getPeopleFromExternalAPI();
+      const names: string[] = this.countNameService.reducePersonToArrayOfName(people);
       const films: AxiosResponse = await this.uniqueService.getFilmsFromExternalAPI();
       const text: string = this.uniqueService.reduceOpeningCrawlToString(films);
-      return this.uniqueService.countUniqueWords(text);
+      const countedWords: [string, number][] = this.uniqueService.countUniqueWords(text);
+      const countedWordsMap: Map<string, number> = new Map(countedWords);
+      const filteredNames: string[] = this.countNameService.findMostPopularName(names, countedWordsMap);
+      return filteredNames;
     } catch (error) {
       if (error instanceof AxiosException) {
         throw new BadRequestException(error.message);

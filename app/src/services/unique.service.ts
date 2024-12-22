@@ -1,3 +1,4 @@
+import { AxiosException } from "@app/common/exceptions/entity.not.found.exception copy";
 import { Film } from "@app/entities/film/film.entity";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -16,7 +17,7 @@ export class UniqueService {
       const reponse: AxiosResponse = await axios.get(this.configService.get("EXTERNAL_FILMS_API"));
       return reponse;
     } catch (error) {
-      throw new Error(error);
+      throw new AxiosException(error);
     }
   }
 
@@ -28,7 +29,7 @@ export class UniqueService {
 
   countUniqueWords(text: string): [string, number][] {
     const allText = [text].join(" ").toLowerCase();
-    const words = allText.replace(/[^\w\s]/g, "").split(/\s+/);
+    const words = allText.replace(/[^\w\s]/g, " ").split(/\s+/);
     const result = words.reduce((acc: { [key: string]: number }, word: string) => {
       if (word) {
         acc[word] = (acc[word] || 0) + 1;
